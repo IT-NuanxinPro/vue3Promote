@@ -14,29 +14,56 @@
         </div>
         <!-- 回复列表 -->
         <div v-if="message.isExpanded" class="replies">
-          <div v-for="reply in message.replies" :key="reply.id" class="reply-item">
-            <span>{{ reply.author }} 回复 {{ reply.to }}：{{ reply.content }}</span>
+          <div
+            v-for="reply in message.replies"
+            :key="reply.id"
+            class="reply-item"
+          >
+            <span
+              >{{ reply.author }} 回复 {{ reply.to }}：{{ reply.content }}</span
+            >
             <!-- 时间和回复按钮 -->
             <div class="reply-meta">
               <span>{{ reply.time }}</span>
               <!-- 回复按钮 -->
-              <span class="replayTwoLevel" @click="replyToMessage(message, reply.author)">回复</span>
+              <span
+                class="replayTwoLevel"
+                @click="replyToMessage(message, reply.author)"
+                >回复</span
+              >
             </div>
           </div>
         </div>
 
         <div class="message-actions">
-          <span v-if="message.replies.length > 0"> 共 {{ message.replies.length }} 条回复， </span>
+          <span v-if="message.replies.length > 0">
+            共 {{ message.replies.length }} 条回复，
+          </span>
           <!-- 展开/收起回复按钮 -->
-          <span class="isExpand" v-if="message.replies.length > 0" @click="toggleReplies(message)">
+          <span
+            class="isExpand"
+            v-if="message.replies.length > 0"
+            @click="toggleReplies(message)"
+          >
             {{ message.isExpanded ? '收起' : '点击查看' }}
           </span>
         </div>
 
         <!-- 回复输入框 -->
-        <div v-if="replyTarget.message === message && isReplyBoxVisible" class="reply-box">
-          <el-input v-model="newReply" :placeholder="placeholderTip" type="textarea" maxlength="50" show-word-limit />
-          <el-button type="primary" @click="sendReply" style="height: 100%">发送</el-button>
+        <div
+          v-if="replyTarget.message === message && isReplyBoxVisible"
+          class="reply-box"
+        >
+          <el-input
+            v-model="newReply"
+            :placeholder="placeholderTip"
+            type="textarea"
+            maxlength="50"
+            show-word-limit
+          />
+          <el-button type="primary" @click="sendReply" style="height: 100%"
+            >发送</el-button
+          >
         </div>
       </div>
     </div>
@@ -58,7 +85,9 @@ const replyTarget = ref({ message: null, to: null })
 const isReplyBoxVisible = ref(false)
 
 const placeholderTip = computed(() => {
-  return replyTarget.value.to ? `回复 @${replyTarget.value.to}:` : `回复 ${replyTarget.value.message.author}:`
+  return replyTarget.value.to
+    ? `回复 @${replyTarget.value.to}:`
+    : `回复 ${replyTarget.value.message.author}:`
 })
 
 // 展开或收起回复内容
@@ -68,7 +97,11 @@ const toggleReplies = (message) => {
 
 // 点击“回复”按钮
 const replyToMessage = (message, to = null) => {
-  if (replyTarget.value.message === message && isReplyBoxVisible.value && replyTarget.value.to === to) {
+  if (
+    replyTarget.value.message === message &&
+    isReplyBoxVisible.value &&
+    replyTarget.value.to === to
+  ) {
     isReplyBoxVisible.value = false
     replyTarget.value = { message: null, to: null }
     newReply.value = ''
